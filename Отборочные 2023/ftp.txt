@@ -1,0 +1,54 @@
+groupadd ftpusers
+adduser admin
+usermod -aG ftpusers admin
+chown -R admin:ftpusers /var/www
+chmod -R 775 /var/www
+
+apt install vsftpd
+systemctl status vsftpd
+
+nano /etc/vsftpd.conf
+
+listen=NO
+listen_ipv6=YES
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+chroot_local_user=YES
+allow_writeable_chroot=YES
+local_root=/var/www
+
+
+systemctl restart vsftpd
+systemctl status vsftpd
+
+nano /etc/hosts.deny
+vsftpd: ALL
+
+nano /etc/hosts.allow
+vsftpd: 192.168.1.0/255.255.255.0 #Указываем сеть LAN-KJA
+
+systemctl restart vsftpd
+
+nano /etc/pam.d/vsftpd
+auth required pam_succeed_if.so quiet user ingroup ftpusers
+
+--Монтирование
+!НА КЛИЕНТЕ
+
+apt install curlftpfs -y
+mkdir /opt/ftp
+
+nano .netrc
+machine 192.168.4.2
+login admin
+password P@ssw0rd
+
+nano /etc/fstab
+curlftpfs#192.168.4.2 /opt/ftp fuse _netdev,defaults 0 0
+
+mount -a (Без ошибок)
+df -h
+
+
+

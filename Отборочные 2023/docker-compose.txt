@@ -1,0 +1,42 @@
+--- 
+version: '2'
+
+services:
+
+  mariadb:
+    image: mariadb:10.5
+    container_name: MariaDB
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=P@ssw0rd
+      - MARIADB_DATABASE=nextcloud
+      - MARIADB_USER=nextcloud
+      - MARIADB_PASSWORD=nextcloud
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpMyAdmin
+    restart: always
+    environment:
+      - PMA_HOST=mariadb
+    ports:
+      - 8888:80
+    depends_on:
+      - mariadb
+
+  nextcloud:
+    image: nextcloud
+    container_name: NextCloud
+    restart: always
+    ports:
+      - 80:80
+    environment:
+      - MYSQL_HOST=mariadb
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - NEXTCLOUD_ADMIN_USER=user
+      - NEXTCLOUD_ADMIN_PASSWORD=P@ssw0rd
+      - NEXTCLOUD_TRUSTED_DOMAINS=IP_сервера ИМЯ_сервера  (srv-kja.kja.jun.profi)
+    depends_on:
+      - mariadb

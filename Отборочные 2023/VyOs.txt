@@ -1,0 +1,99 @@
+## Настройка ip аддресов на интерфейсах
+
+config
+
+edit int eth eth0
+
+set address 192.168.10.2/24   #  Смотреть по топологии
+
+set description FW   # Название интерфейса
+
+exit
+
+edit int eth eth0
+
+set address 192.168.11.1/24   #  Смотреть по топологии
+
+set description PC   # Название интерфейса
+
+exit
+
+edit int eth eth0
+
+set address 192.168.12.1/24   #  Смотреть по топологии
+
+set description PC   # Название интерфейса
+
+exit
+
+commit
+
+save
+
+show inter
+
+## LLDP
+
+config
+
+set service lldp
+
+commit
+
+save
+
+//Проверка
+
+show lldp neighbors
+
+## Настройка OSPF
+
+set protocols ospf area 0 network 192.168.10.0/24
+
+set protocols ospf area 0 network 192.168.11.0/24
+
+set protocols ospf area 0 network 192.168.12.0/24
+
+set protocols ospf inter eth1 passive
+
+set protocols ospf inter eth2 passive
+
+commit
+
+save
+
+## Проверка работы ospf
+
+sh protocols ospf
+
+exit
+
+sh ip ospf route
+
+## Настройка DHCP relay
+
+config
+
+set service dhcp-relay inter eth1
+
+set service dhcp-relay inter eth2
+
+set service dhcp-relay server 192.168.12.2
+
+commit
+
+save
+
+## SSH
+
+config
+
+set service ssh port 22
+
+commit
+
+save
+
+// Можно проверить PC-MSC  $ shh vyos@r0-msk
+
+

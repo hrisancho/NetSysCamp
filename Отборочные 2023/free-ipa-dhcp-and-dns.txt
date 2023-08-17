@@ -1,0 +1,124 @@
+SRV-VVO
+
+1 Имя srv-vvo.vvo.jun.profi
+2 IP адрес (важно dns 100.100.100.100)
+3 SELINUX разрешить все
+4 перезагрузка
+5 настройка NTP клиента (сервер FW-VVO)
+6 часовой пояс
+7 отключить сервис 
+systemctl disable --now systemd-timesyncd
+8 устанавливаем ipa-server
+dnf -y install bind bind-dyndb-ldap ipa-server ipa-server-dns ipa-server-trust-ad
+9 проверяем java -version 
+10 Интерактивная установка ipa-server
+ipa-server-install --mkhomedir
+Do you want to configure integrated DNS (BIND)? [no]: yes
+отвечаем на все вопросы Enter
+Вводим пароль
+Вводим пароль
+Вводим пароль
+Вводим пароль
+отвечаем на все вопросы Enter
+Continue to configure the system with these values? [no]: yes
+
+PC-VVO
+
+1 Имя srv-vvo.vvo.jun.profi
+2 IP адрес (важно dns 192.168.11.2)
+3 настройка NTP клиента (сервер FW-VVO)
+4 часовой пояс
+5 SELINUX разрешить все
+6 перезагрузка
+7 проверяем dns
+host srv-vvo.vvo.jun.profi
+host ya.ru (не работает)
+
+SRV-VVO
+
+1 nano /etc/named/ipa-ext.conf
+acl "trusted_netwok" {
+	localnets;
+	localhost;
+	192.168.10.0/24;
+	192.168.13.0/24;
+}
+2 nano /etc/named/ipa-options-ext.conf
+
+dnssec-validation no;
+allow-recursion { trusted_netwok; };
+allow-query-cache { trusted_netwok; };
+
+3 ipactl restart
+
+PC-VVO
+
+1 проверяем dns
+host srv-vvo.vvo.jun.profi
+host ya.ru (работает!!!)
+
+SRV-VVO
+
+1 установка dhcp сервера
+2 nano /etc/dhcp/dhcpd.conf
+3 cp /usr/share/doc/dhcp-server/dhcpd.conf.example /etc/dhcp/dhcpd.conf
+4 nano /etc/dhcp/dhcpd.conf
+#Добавим:
+ddns-update-style interim
+
+ddns-updates on;
+update-static-leases on;
+
+zone vvo.jun.profri{
+primary 127.0.0.1 # Указываем свой ip адресс
+}
+zone 10.168.192.in-addr.arpa{
+primary 127.0.0.1 # Указываем свой ip адресс
+}
+zone 11.168.192.in-addr.arpa{
+primary 127.0.0.1 # Указываем свой ip адресс
+}
+zone 12.168.192.in-addr.arpa{
+primary 127.0.0.1 # Указываем свой ip адресс
+}
+
+5 systemctl enable --now dhcpd
+
+PC-VVO
+
+1 В браузере заходим в админ панель freeipa (https://srv-vvo.vvo.jun.profi)
+2 Сетевые службы - DNS - Зоны DNS
+3 Добавить - IP-сеть (192.168.10.0/24)
+4 заходим в каждую зону - параметры - ставим галочку Динамическое обновление - ставим галочку Разрешить PTR - Перенаправители зон 100.100.100.100 - Сохранить
+5 DNS глобальная конфигурация - ставим галочку Разрешить PTR - Перенаправители зон 100.100.100.100 - Сохранить
+
+SRV-VVO
+
+1 systemctl restart dhcpd
+2 ipactl restart
+
+PC-VVO
+
+1 устанавливаем получать IP адрес по DHCP
+2 на FW-VVO должен быть настроен dhcp-relay на 192.168.11.2
+3 вводим в домен
+4 заходим под пользователем admin
+5 В браузере заходим в админ панель freeipa (https://srv-vvo.vvo.jun.profi) 
+6 Создаем группу jun-users
+7 Создаем пользователей alex и den
+8 Добавляем созданных пользователей в группу jun-users
+9 Политика - Sudo - Правила SUDO - вводим имя - Кто (выбрать admin) - Получить доступ к узлу (любой) - Выполнить команды (любой) - сохранить
+10 в терминале запучкаем sudo vim, смотрим какой библиотеки не хватает
+11 su - dnf install libsss_sudo - exit - sudo vim (работает!!!)
+12 используя справку настраиваем автовход в админ панель
+
+
+
+---VPN
+
+Сетевые службы  -> DNS -> Перенапревления DNS -> Перенапрвлитель зоны указываем ip той сети на которую мы перенаправляем, есть доступ к другой сети по vpn 
+
+
+
+
+

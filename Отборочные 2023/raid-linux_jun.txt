@@ -1,0 +1,55 @@
+Смотрим какие диски установлены
+lsblk
+
+parted /dev/sdb
+(parted)mklabel msdos
+(parted)mkpart primary xfs 0% 100%
+(parted)print
+(parted)quit
+
+parted /dev/sdc
+(parted)mklabel msdos
+(parted)mkpart primary xfs 0% 100%
+(parted)print
+(parted)quit
+
+Смотрим созданные разделы
+lsblk
+
+Устанавливаем утилиту mdadm
+apt install mdadm
+
+Создаем RAID1 из созданных разделов на дисках sdb и sdc
+mdadm --create -v /dev/md0 --level=1 --raid-devices=2 /dev/sdb1 /dev/sdc1
+
+Проверка создания массива
+cat /proc/mdstat
+#
+Создаем файловую систему
+apt install xfsprogs
+mkfs.xfs /dev/md0
+
+Монитуем массив в папку
+mkdir /opt/mc
+mkdir /opt/mc/data
+mount /dev/md0 /opt/mc/data
+
+Проверяем монитрование
+df -h
+
+Обеспечим что бы наш RAID собирался автоматически при перезагрузке системы
+sudo mdadm --detail --scan >> /etc/mdadm/mdadm.conf
+sudo update-initramfs -u
+
+Обеспечим что бы массив автоматически был смонтирован при загрузке системы
+vim /etc/fstab
+
+/dev/md0 /opt/mc/data xfs defaults 0 0
+
+Проверка
+
+umount /opt/mc/data
+mount -a
+Если не вышло ошибок, то все хорошо
+df -h
+

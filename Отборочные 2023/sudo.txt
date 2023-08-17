@@ -1,0 +1,7 @@
+-----SUDO---------
+apt install sudo -y
+visudo
+
+%sudo ALL=(ALL:ALL) NOPASSWD:ALL
+
+usermod -aG sudo user

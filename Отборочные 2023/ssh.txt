@@ -1,0 +1,6 @@
+-------SSH--------
+nano .ssh/config
+
+Host VDS
+	Hostname 100.70.4.18
+	User user

@@ -1,0 +1,83 @@
+------ Центр сертификации ------
+
+1 apt intsall openssl*
+2 mkdir /opt/ca
+3 cp -rp /etc/ssl/* /opt/ca
+4 vim /usr/lib/ssl/openssl.cnf
+
+HOME	= .
+..
+[CA_default]
+dir	=	/opt/ca
+..
+policy	= policy_anyting
+
+5 cd /opt/ca
+6 mkdir newcerts
+7 touch index.txt
+8 touch serial
+9 echo 01 > serial
+10 reboot
+11 cd /opt/ca
+12 openssl genrsa -out private/cakey.pem
+13 openssl req -new -key private/cakey.pem -days 3650 -out cacert.csr
+
+RU
+.
+.
+JUN PROFI
+.
+JUN PROFI CA
+.
+.
+.
+
+14 openssl x509 -req -in cacert.csr -signkey private/cakey.pem -days 3650 -out cacert.pem
+15 openssl ca
+
+------ Создание сертификата ------
+
+1 cd /opt/ca/newcerts
+2 cp /opt/ca/openssl.cnf /opt/ca/newcerts
+3 ls
+4 vim openssl.cnf
+
+[v3_req]
+..
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = corp.jun.profi
+
+5 openssl genrsa -out key.pem
+6 openssl req -new -key key.pem -days 365 -out site.csr -config openssl.cnf -extensions v3_req
+
+RU
+.
+.
+JUN PROFI
+.
+corp.jun.profi
+.
+.
+.
+
+7 openssl ca -in site.csr -out site.crt -config openssl.cnf -extensions v3_req
+
+y
+y
+
+8 cat /opt/ca/index.txt
+
+------------Создание сертификата для FW------------
+
+4 nano openssl.cnf
+
+[v3_req]
+extendedKeyUsage = serverAuth
+
+[alt_names]
+DNS.1 = fw-kja
+DNS.2 = fw-kja.kja.jun.profi
+DNS.3 = 192.168.1.1
+

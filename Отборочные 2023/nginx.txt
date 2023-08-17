@@ -1,0 +1,38 @@
+1 apt install nginx
+2 mkdir /var/www/portal
+3 touch /var/www/portal/index.html
+4 vim /var/www/portal/index.html
+
+Welcome to secure corporate portal jun.profi
+
+5 touch /etc/nginx/conf.d/portal.conf
+6 vim /etc/nginx/conf.d/portal.conf
+
+server {
+	listen 80;
+	server_name corp.jun.profi;
+	return 301 https://$host$request_uri;
+}
+
+server {
+	listen 443;
+	server_name corp.jun.profi;
+	root /var/www/portal;
+	ssl on;
+	ssl_certificate /opt/ca/newcerts/sete.crt;
+	ssl_certificate_key /opt/ca/newcerts/key.pem;
+	location / {
+		index index.html;
+	}
+}
+
+
+
+
+7 systemctl restart nginx
+8 systemctl status nginx
+
+На клиенте
+
+scp root@192.168.3.2:/opt/ca/cacart.pem ./cacert.crt
+
