@@ -1,0 +1,19 @@
+Подключить cd rom через настройки
+проверить подключение Remo..-device
+
+mount /откудаво /куда
+docker load -i /куда
+
+docker run -d -it --name mc --restart always -v /opt/mc/data:/data -e EULA=TRUE -e MOTD="Jun Profi" -e MAX_PLAYERS=12 -e ONLINE_MODE=FALSE -p 25565:25565 itzg/minecraft-server
+
+
+CLient:
+
+Устанавливаем java 8 или поновее
+Скачиваем jar архив
+В подробностях указывем доступ user на чение и запись
+Так же указываем разрешение что бы архив .jar выполнялся как программа
+Из user создаем ярлык на рабочем столе
+Созданый ярлык мы открываем из текстового редактора открываем и редактируем
+Exec = java -jar /путь/до/jar/файла
+Сохроняем и устанавливаем нашу версию maincraft
