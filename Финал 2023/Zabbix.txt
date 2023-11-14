@@ -55,19 +55,6 @@ services:
     networks:
       - zabbix-net
 
-  nginx:
-    image: nginx:latest
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-#    volumes:
-#      - ./nginx.conf:не знай стоит ли указывать конфиг
-    networks:
-      - zabbix-net
-    depends_on:
-      - zabbix-web
-
 networks:
   zabbix-net:
     driver: bridge
