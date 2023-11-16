@@ -67,3 +67,13 @@ services:
 networks:
   zabbix-net:
     driver: bridge
+
+12) Обеспечьте сбор базовых показателей со всех подключенных устройств:
+Server:
+sudo dnf install zabbix-agent 
+docker container inspect <ID zabbix server основного> (мы получаем ip сервера внутри сети docker)
+nano /etc/zabbix/zabbix_agentd.conf 
+(
+Меняем параметр сервера их там два и меняем на <ip сервера,ip docker контейнера>
+разблокируем парамтр Hostname и указываем полное имя компа
+)
