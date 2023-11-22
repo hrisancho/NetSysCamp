@@ -1,0 +1,179 @@
+ssh-keygen 
+ssh-copy-id user@100.99.90.101
+ssh user@100.99.90.101
+clear
+nano .ssh/config
+ssh VDS
+clear
+ssh-copy-id user@192.168.1.2
+ssh user@192.168.1.2
+clear
+ping 192.168.4.2
+ping ya.ru
+ping 8.8.8.8
+ping 192.168.4.2
+host dc-spb
+sudp-get install ssh
+sudo apt-get install ssh
+clear
+cat /home/admin/server.csr 
+clear
+sudo df -h
+scp Desktop/server.key user@192.168.5.2:/home/user/cert-key.key
+scp Desktop/cert.pem user@192.168.5.2:/home/user/cert.pem
+ping 192.168.5.2
+host corp.jun.profi
+cat Desktop/dle_trial/Documentation/Russian/readme.chm 
+scp Desktop/dle_trial/upload user@192.168.5.2:/home/user/upload
+scp -r Desktop/dle_trial/upload/* user@192.168.5.2:/home/user/
+sudo apt install nfs-common 
+scp -r Desktop/dle_trial/upload/* user@192.168.5.2:/home/user/upload
+sudo showmount -e data-spb.spb.jun.profi
+sudo mount -t nfs4  -o sec=krb5 192.168.4.2:/opt/netshare /mnt/netshare/
+ls /mnt/
+sudo mkdir /mnt/netshare
+sudo mount -t nfs4  -o sec=krb5 192.168.4.2:/opt/netshare /mnt/netshare/
+sudo mount -t nfs4  -o sec=krb5 data-spb.spb.jun.profi:/opt/netshare /mnt/netshare/
+sudo apt install mount.nfs4
+sudo mount -t nfs  -o sec=krb5 data-spb.spb.jun.profi:/opt/netshare /mnt/netshare/
+sudo mount.nfs4  -o sec=krb5 data-spb.spb.jun.profi:/opt/netshare /mnt/netshare/
+sudo mount.nfs4 -vvv -o sec=krb5 data-spb.spb.jun.profi:/opt/netshare /mnt/netshare/
+ipa-client-automount
+ipa client-automount
+sudo ipa client-automount
+sudo ipa-client-automount
+sudo mount.nfs4 -vvv -o sec=krb5 data-spb.spb.jun.profi:/opt/netshare /mnt/netshare/
+df -h
+sudo reboot
+df -h
+sudo apt install autofs
+sudo vim /etc/auto.master 
+touch /etc/auto.nfs
+sudo touch /etc/auto.nfs
+sudo vim /etc/auto.nfs
+sudo systemctl start autofs
+df -h
+sudo systemctl status autofs
+sudo systemctl enable autofs
+sudo ipa-client-automount
+df -h
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+sudo systemctl status autofs
+df -h
+sudo mount.nfs4 -vvv -o sec=krb5 data-spb.spb.jun.profi:/opt/netshare /mnt/netshare/
+df -h
+sudo systemctl restart autofs
+sudo systemctl status autofs
+reboot
+sudo reboot
+df -h
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+sudo systemctl status autofs
+df -h
+sudo vim /etc/auto.nfs
+sudo vim /etc/auto.master 
+sudo vim /etc/auto.nfs
+sudo vim /etc/auto.master 
+sudo systemctl restart autofs
+df -h
+sudo vim /etc/auto.master 
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+sudo systemctl status autofs
+df -h
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+sudo df -h
+sudo journalctl -xe
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+sudo systemctl restart -v autofs
+sudo systemctl restart autofs
+sudo journalctl -xe
+sudo vim /etc/auto.master 
+sudo systemctl restart autofs
+df -h
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+sudo vim /etc/auto.nfs
+sudo ipa-client-automount
+df -h
+sudo systemctl restart autofs
+df -h
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+sudo systemctl restart autofs
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+mount -t nfs4 data-spb.spb.jun.profi:/opt/netshare /mnt/netshare
+sudo mount -t nfs4 data-spb.spb.jun.profi:/opt/netshare /mnt/netshare
+ls /mnt
+sudo mkdir /mnt/netshare
+df -h
+ls -l
+ls -l /mnt
+sudo mkdir /mnt/netshare
+sudo systemctl stop autofs
+sudo mkdir /mnt/netshare
+ls -l
+sudo mount -t nfs4 data-spb.spb.jun.profi:/opt/netshare /mnt/netshare
+df -h
+sudo umount /mnt/netshare
+sudo vim /etc/auto.master
+sudo vim /etc/auto.nfs
+sudo systemctl start autofs
+df -h
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+sudo vim /etc/auto.misc 
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+ls /mnt/netshare/
+df -h
+sudo touch /mnt/netshare/1
+sudo vim /etc/auto.nfs
+sudo systemctl restart autofs
+df -h
+sudo touch /mnt/netshare/1
+ls -l /mnt
+ls -l /mnt/netshare/
+sudo systemctl stop autofs
+rm -rf /mnt/netshare/
+sudo rm -rf /mnt/netshare/
+sudo vim /etc/auto.nfs
+sudo vim /etc/auto.master 
+sudo systemctl start autofs
+df -h
+ls -l /mnt/
+ls -l /mnt/netshare
+df -h
+ls -l /mnt
+touch /mnt/netshare/3.txt
+sudo reboot
