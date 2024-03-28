@@ -1,0 +1,38 @@
+
+version: '3'
+
+services:
+
+  db:
+    image: postgres
+    container_name: Postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: toor
+      POSTGRES_DB: nextcloud
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_container
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: P@ssw0rd
+    ports:
+      - "8888:80"
+      
+  nextcloud: 
+    image: nextcloud
+    container_name: Nextcloud
+    restart: always
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: nextcloud
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: toor
+      NEXTCLOUD_ADMIN_USER: user
+      NEXTCLOUD_ADMIN_PASSWORD: P@ssw0rd
+      NEXTCLOUD_TRUSTED_DOMAINS: IP_сервера ИМЯ_сервера  (srv-kja.kja.jun.profi)
+    depends_on:
+      - db
