@@ -1,0 +1,67 @@
+DC-SPB:
+
+sudo ipa service-add nfs/data-spb.spb.jun.profi
+или через web морду 
+
+DATA-SPB
+
+sudo mkdir /opt/netshare
+sudo chmod 777 /opt/netshare
+
+sudo apt install nfs-kernel-server
+
+sudo sed -i 's/^[[:space:]]*NEED_SVCGSSD[[:space:]]*=.*/NEED_SVCGSSD="yes"/' /etc/default/nfs-kernel-server
+sudo sed -i 's/^[[:space:]]*NEED_GSSD[[:space:]]*=.*/NEED_GSSD="yes"/' /etc/default/nfs-common
+sudo sed -i 's/^[[:space:]]*NEED_IDMAPD[[:space:]]*=.*/NEED_IDMAPD="yes"/' /etc/default/nfs-common
+
+kinit admin
+
+sudo ipa-getkeytab -s dc-spb.spb.jun.profi -p nfs/data -k /etc/krb5.keytab
+
+Проверка sudo klist -k или sudo klist 
+
+sudo systemctl daemon-reload
+sudo systemctl restart nfs-kernel-server
+
+sudo nano /etc/exports:
+> /opt/netshare *(rw,sync,no_subtree_check ,sec=krb5)
+
+sudo exportfs -arv
+
+sudo systemctl restart rpcbind nfs-server
+sudo systemctl enable rpcbind nfs-server 
+
+
+PC-SPB:
+sudo apt install nfs-common 
+
+sudo showmount -e data-spb.spb.jun.profi
+
+sudo sed -i 's/^[[:space:]]*NEED_GSSD[[:space:]]*=.*/NEED_SVCGSSD="yes"/' /etc/default/nfs-common
+sudo sed -i 's/^[[:space:]]*NEED_IDMAPD[[:space:]]*=.*/NEED_IDMAPD="yes"/' /etc/default/nfs-common
+
+sudo klist admin 
+# Может что-то ещё понадобитсья 
+
+sudo ipa-client-automount
+# Проверка nfs4 
+sudo mount.nfs4 -vvv -o sec=krb5 data-spb.spb.jun.profi:/opt/netshare /nmt/netshare/
+df -h
+# При правильной конфиграции он опдключиться с ипользованием kerberos 
+
+sudo apt install autofs
+sudo nano /etc/auto.master 
+> /mnt		/etc/auto.nfs --timeout=30 
+
+sudo nano /etc/auto.nfs 
+> netshare	-fstype=nfs4,rw,sec=krd5	data-spb.spb.jun.profi:/opt/netshare
+
+sudo systemctl restart autofs 
+sudo systemctl status autofs 
+
+# Проверка 
+# вообше очень странно:
+sudo nano /mnt/netshare/test.txt
+sudo ls -l /mnt/netshare
+sudo df -h 
+# И через 30 секенд произойдёт диск-коннект диска

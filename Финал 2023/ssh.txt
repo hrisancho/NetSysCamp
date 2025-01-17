@@ -1,0 +1,53 @@
+Настройка ssh
+ssh VDS:
+Настройка sudo без пароля на VDS
+Откройте файл конфигурации sudo на сервере VDS: sudo visudo.
+Добавьте следующую строку в конец файла: user ALL=(ALL) NOPASSWD: ALL.
+Сохраните изменения и закройте файл.
+
+Настройка порта SSH на сервере VDS
+Настройте разрешение для использования ssh port 2202: semanage port -a -t ssh_port_t -p tcp <номер порта>
+Откройте файл конфигурации SSH на сервере VDS: sudo nano /etc/ssh/sshd_config.
+Найдите строку #Port 22 и раскомментируйте ее, заменив 22 на 2202.
+Сохраните изменения и перезапустите службу SSH: sudo systemctl restart sshd.
+
+3) Определите текущие разрешенные SELinux порты прослушивания sshd
+semanage port -l | grep ssh
+
+
+Настройка ключей SSH на устройстве PC-SPB
+mkdir .ssh/
+Создайте пару ключей SSH на устройстве PC-SPB: sudo ssh-keygen.
+nano /etc/hosts (Указываем VDS)
+Скопируйте открытый ключ на сервер VDS: ssh-copy-id user@VDS -p 2202
+Проверьте, что вы можете подключиться к VDS без ввода пароля: ssh user@VDS.
+
+
+Настройка SSH-подключения без дополнительных параметров
+Откройте файл конфигурации SSH на устройстве PC-SPB: vi ~/.ssh/config.
+Добавьте следующие строки в файл:
+Host VDS
+    HostName VDS_IP
+    User user
+    Port 2202
+
+
+-----SUDO__VDS---------
+apt install sudo -y
+visudo
+%sudo ALL=(ALL:ALL) NOPASSWD:ALL
+usermod -aG sudo user
+
+
+VDS и R0
+mkdir /home/user/.ssh
+
+На PC-SPB заходим под пользователем user с паролем P@ssw0rd:
+
+nano /etc/hosts (Указываем ip и имя компьютера куда мы хотим подключать) или это делаем через freeipa
+vds      100.99.90.1001
+r0-spb   192.168.3.1
+
+ssh-keygen
+
+scp id_rsa.pub  user@100.70.6.12:/home/user/.ssh/authorized_keys

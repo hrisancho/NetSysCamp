@@ -1,0 +1,20 @@
+Veloren:
+
+Server:
+Создаём папку для docker-compose и переходим в неё:
+mkdir /opt/veloren/
+cd /opt/veloren/
+Скачиваем docker-compose файл с официального сайта:
+wget https://gitlab.com/veloren/veloren/-/raw/master/server-cli/docker-compose.yml
+Поднимаем docker-compose файл:
+docker-compose up -d
+Настройка сервера происходит в дериктории ./userdata:
+nano ./userdata/server/server_config/settings.ron
+auth_server_address: None,
+и т.д.
+
+Client:
+Для удобства скачиваем airshipper это лаунчер для игры veloren (Что-то на подобие Tlauncher для mc)
+flatpak install flathub net.veloren.airshipper
+Запускаем
+flatpak run net.veloren.airshipper

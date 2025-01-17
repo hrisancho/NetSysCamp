@@ -1,0 +1,56 @@
+dnf install kea* 
+
+nano /etc/kea/kea-dhcp4.conf
+
+{
+"Dhcp4": {
+    "interfaces-config": {
+        "interfaces": ["eth0"],
+        "dhcp-socket-type": "udp"
+    },
+    "authoritative": true,
+    "renew-timer": 15840,
+    "rebind-timer": 27720,
+    "valid-lifetime": 31680,
+    "option-data": [
+        {
+            "name": "domain-name-servers",
+            "data": "3.3.3.3"
+        },
+        {
+            "name": "domain-search",
+            "data": "nvr.jun.profi"
+        }
+    ],
+    "subnet4": [
+        {
+            "subnet": "192.168.10.0/24",
+            "pools": [ { "pool": "192.168.10.11 - 192.168.10.254" } ],
+            "option-data": [
+                {
+                    "name": "routers",
+                    "data": "192.168.10.1"
+                }
+            ]
+            // Add reservations here
+        },
+        {
+            "subnet": "192.168.12.0/24",
+            "pools": [ { "pool": "192.168.12.11 - 192.168.12.254" } ],
+            "option-data": [
+                {
+                    "name": "routers",
+                    "data": "192.168.12.1"
+                }
+            ]          
+            // Add reservations here
+        }        
+        // Add subnets here
+    ]
+}
+}
+
+# После чего проводим опреации над kea dhcp форматом:
+keactl <comand> -s <service>
+<comand>  start stop reload status version (Проверяется keactl)
+<service> dhcp4 dhcp6 ctrl_agent (Проверяется keactl status)
